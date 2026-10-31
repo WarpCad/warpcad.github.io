@@ -1,0 +1,58 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+import { test, expect } from '@playwright/test'
+
+/**
+ * The home page, driven against `/` of the built `dist/` (`TODO/build-021`). Runs at all three
+ * viewports on all three engines (the nine projects in `playwright.config.js`).
+ */
+
+/** Relative luminance of an `rgb(...)` or `rgba(...)` string, 0 (black) to 1 (white). */
+function luminance(css) {
+  const [r, g, b] = css.match(/\d+(\.\d+)?/g).slice(0, 3).map((c) => {
+    const v = Number(c) / 255
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4
+  })
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
+test('the Open WarpCad link points at the app', async ({ page }) => {
+  await page.goto('/')
+  const open = page.getByTestId('open-app')
+  await expect(open).toHaveText('Open WarpCad')
+  await expect(open).toHaveAttribute('href', 'https://app.warpcad.com/')
+})
+
+test('the Open WarpCad link is at least 44 px tall (a touch target)', async ({ page }) => {
+  await page.goto('/')
+  const box = await page.getByTestId('open-app').boundingBox()
+  expect(box.height).toBeGreaterThanOrEqual(44)
+})
+
+test('no horizontal scroll at this viewport', async ({ page }) => {
+  await page.goto('/')
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+  expect(overflow).toBeLessThanOrEqual(0)
+})
+
+test('the page is picture-stable at this viewport', async ({ page }) => {
+  await page.goto('/')
+  await expect(page).toHaveScreenshot('home.png', { maxDiffPixelRatio: 0.02 })
+})
+
+test.describe('dark colour scheme', () => {
+  test.use({ colorScheme: 'dark' })
+  test('the background is dark', async ({ page }) => {
+    await page.goto('/')
+    const bg = await page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor)
+    expect(luminance(bg)).toBeLessThan(0.1)
+  })
+})
+
+test.describe('light colour scheme', () => {
+  test.use({ colorScheme: 'light' })
+  test('the background is light', async ({ page }) => {
+    await page.goto('/')
+    const bg = await page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor)
+    expect(luminance(bg)).toBeGreaterThan(0.8)
+  })
+})

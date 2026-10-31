@@ -1,0 +1,21 @@
+{
+  "name": "warpcad.github.io",
+  "version": "1.0.0",
+  "description": "The warpcad.com home page: a VitePress site that links WarpCad and its docs",
+  "scripts": {
+    "build": "vitepress build",
+    "serve": "vitepress preview --port 4173 --strictPort",
+    "check": "node scripts/check.mjs",
+    "spdx": "node scripts/spdx.mjs --check",
+    "test": "node --test scripts/cname.test.mjs && playwright test"
+  },
+  "keywords": [],
+  "author": "John Cole <johnwebbcole@gmail.com> (http://johnwebbcole.gitlab.io/)",
+  "license": "AGPL-3.0-or-later",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "vitepress": "1.6.4"
+  },
+  "private": true
+}
