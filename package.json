@@ -7,7 +7,9 @@
     "serve": "vitepress preview --port 4173 --strictPort",
     "check": "node scripts/check.mjs",
     "spdx": "node scripts/spdx.mjs --check",
-    "test": "node --test scripts/cname.test.mjs && playwright test"
+    "test": "node --test scripts/cname.test.mjs scripts/help-groups.test.mjs && playwright test",
+    "prebuild": "node scripts/fetch-help.mjs",
+    "check:offline": "node scripts/check.mjs --offline"
   },
   "keywords": [],
   "author": "John Cole <johnwebbcole@gmail.com> (http://johnwebbcole.gitlab.io/)",

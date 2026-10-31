@@ -32,7 +32,7 @@ export default defineConfig({
     })),
   ),
   webServer: {
-    command: `npm run build && npm run serve`,
+    command: `WARPCAD_HELP_FIXTURE=e2e/fixtures npm run build && npm run serve`,
     url: `http://localhost:${PORT}/`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

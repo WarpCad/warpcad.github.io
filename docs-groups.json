@@ -1,0 +1,9 @@
+{
+  "groups": [
+    { "title": "Start here", "slugs": ["getting-started", "mobile", "viewport-navigation", "help"] },
+    { "title": "Building a model", "slugs": ["primitive-placement", "hardware-library", "selection-and-inspector", "booleans", "groups", "snap-align", "fillet-chamfer", "resize-bisect", "mirror", "variables", "sketch-mode", "sketch-tracing", "user-library", "bill-of-materials"] },
+    { "title": "History and files", "slugs": ["undo-redo", "timeline", "save-load", "sharing", "merging", "export", "print-prep", "resolution"] },
+    { "title": "The AI partner", "slugs": ["design-intent", "ai-partner", "mcp", "webmcp"] },
+    { "title": "About", "slugs": ["privacy", "readme"] }
+  ]
+}

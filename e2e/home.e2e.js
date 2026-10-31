@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import { readFileSync } from 'node:fs'
+
 import { test, expect } from '@playwright/test'
 
 /**
@@ -55,4 +57,34 @@ test.describe('light colour scheme', () => {
     const bg = await page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor)
     expect(luminance(bg)).toBeGreaterThan(0.8)
   })
+})
+
+/** The fixture index: the same shape the app publishes (`e2e/fixtures/index.json`). */
+const INDEX = JSON.parse(readFileSync('e2e/fixtures/index.json', 'utf8'))
+
+test('every page of the help index is linked once, with its title, into the app', async ({ page }) => {
+  await page.goto('/')
+  for (const entry of INDEX.pages) {
+    const links = page.getByTestId(`doc-${entry.slug}`)
+    await expect(links).toHaveCount(1)
+    await expect(links).toHaveText(entry.title)
+    await expect(links).toHaveAttribute('href', `https://app.warpcad.com/#/help/${entry.slug}`)
+  }
+})
+
+// Focus is not moved here: the page has no client-side script (CLAUDE.md), and VitePress's router
+// scrolls to an in-page anchor without moving focus. The scroll and the address are the contract.
+test('Read the docs scrolls to Documentation and sets the #docs address', async ({ page }) => {
+  await page.goto('/')
+  await page.getByTestId('read-docs').click()
+  await expect(page.locator('#docs')).toBeInViewport()
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toBe('#docs')
+})
+
+test('the docs links are at least 44 px tall (a touch target)', async ({ page }) => {
+  await page.goto('/')
+  for (const entry of INDEX.pages.slice(0, 5)) {
+    const box = await page.getByTestId(`doc-${entry.slug}`).boundingBox()
+    expect(box.height).toBeGreaterThanOrEqual(44)
+  }
 })
