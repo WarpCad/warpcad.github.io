@@ -1,5 +1,10 @@
 # warpcad.github.io — project instructions
 
+**Commit rule (owner, 2026-11-03).** The owner is the only person working on this repository. Commits
+and pushes may go straight to `main` without a branch or a pull request. A push to `main` deploys the
+live site (`.github/workflows/pages.yml`), so still confirm before any force-push, history rewrite, or
+deletion of a branch or the Pages deployment.
+
 This repository is the warpcad.com home page. The app's rules live in the app repository's
 `CLAUDE.md` (`~/src/@WarpCad/warpcad/CLAUDE.md`): read it for the Responsive Layout, Browser
 Support, theming and licensing rules. This file lists only what is specific here.
