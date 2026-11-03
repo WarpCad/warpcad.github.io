@@ -31,7 +31,10 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      # The GA4 measurement ID is an Actions variable (public, but kept out of source). Unset means no analytics.
       - run: npm run build
+        env:
+          GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
       - run: npm run check
       - run: npx playwright install --with-deps chromium
       # The screenshot baselines are macOS renders; the Linux runner's text rasterises differently, so the
