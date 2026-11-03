@@ -32,10 +32,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-        env:
-          # Page-view analytics (docs/decisions/home-page.md, TODO/docs-027). Optional: with the repository
-          # variable unset the build carries no tag. The measurement ID is public by design (a variable).
-          GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
       - run: npm run check
       - run: npx playwright install --with-deps chromium
       # The screenshot baselines are macOS renders; the Linux runner's text rasterises differently, so the

@@ -17,12 +17,6 @@ npm run spdx       # every source and Markdown file carries its licence marker
 
 Open `http://localhost:4173/` and press **Open WarpCad**: it opens `https://app.warpcad.com/`.
 
-## Analytics
-
-One page view per visit, in a GA4 property of its own (`docs/decisions/home-page.md`). It is on only when the
-repository variable `GA_MEASUREMENT_ID` is set to a `G-…` ID; unset, the build carries no tag and the page makes no
-request to Google. Localhost, `npm run dev`, previews and automated browsers never measure. See `/privacy`.
-
 ## Deploy
 
 `.github/workflows/pages.yml` builds, checks and deploys `dist/` to GitHub Pages on a push to
