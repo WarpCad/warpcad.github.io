@@ -16,7 +16,9 @@ import { data } from './.vitepress/help.data.mjs'
     <a data-testid="open-app" class="button primary" :href="data.site.appUrl">Open WarpCad</a>
     <a data-testid="read-docs" class="button" href="#docs">Read the docs</a>
   </p>
-  <img class="shot" src="/help/app-overview.png" alt="The WarpCad window with no model yet: the Library on the left, the 3D view with its grid, navigation pad and orientation triad, and the Operations toolbar.">
+  <!-- VitePress sets a `dark` class on <html> (from its toggle, or the OS setting until it is used), so the twin is swapped by CSS on that class, not by <picture media=>, which would ignore the toggle. -->
+  <img class="shot shot-light" src="/help/app-overview.png" alt="The WarpCad window with no model yet: the Library on the left, the 3D view with its grid, navigation pad and orientation triad, and the Operations toolbar.">
+  <img class="shot shot-dark" src="/help/app-overview.dark.png" alt="The WarpCad window with no model yet: the Library on the left, the 3D view with its grid, navigation pad and orientation triad, and the Operations toolbar.">
 </section>
 
 <section class="does">
@@ -77,6 +79,9 @@ import { data } from './.vitepress/help.data.mjs'
   font-weight: 600; text-decoration: none;
 }
 .button.primary { background: var(--vp-c-brand-1); border-color: transparent; color: var(--vp-c-white); }
+.shot-dark { display: none; }
+.dark .shot-light { display: none; }
+.dark .shot-dark { display: block; }
 .shot { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--vp-c-divider); }
 .features li { margin: 0 0 0.6rem; line-height: 1.5; }
 .docs ul { display: grid; grid-template-columns: 1fr; gap: 0 1rem; list-style: none; padding: 0; margin: 0; }

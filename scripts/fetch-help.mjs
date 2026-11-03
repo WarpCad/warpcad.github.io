@@ -5,7 +5,7 @@
  * still fails, the build fails and the previous deploy stays up. With `WARPCAD_HELP_FIXTURE` set
  * (the offline e2e), the same files are read from that folder instead.
  */
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 const site = JSON.parse(readFileSync('site.json', 'utf8'))
@@ -35,11 +35,15 @@ mkdirSync(PUBLIC_HELP, { recursive: true })
 if (fixture) {
   copyFileSync(join(fixture, 'index.json'), join(CACHE, 'help-index.json'))
   copyFileSync(join(fixture, 'app-overview.png'), join(PUBLIC_HELP, 'app-overview.png'))
+  // The dark twin (app `TODO/docs-030`); a fixture without one reuses the light picture so the page never 404s.
+  const darkFixture = existsSync(join(fixture, 'app-overview.dark.png')) ? 'app-overview.dark.png' : 'app-overview.png'
+  copyFileSync(join(fixture, darkFixture), join(PUBLIC_HELP, 'app-overview.dark.png'))
   console.log(`help: read the fixture from ${fixture}`)
 } else {
   const index = await fetchWithRetry(site.helpIndexUrl)
   JSON.parse(index.toString('utf8'))
   writeFileSync(join(CACHE, 'help-index.json'), index)
   writeFileSync(join(PUBLIC_HELP, 'app-overview.png'), await fetchWithRetry(site.screenshotUrl))
-  console.log('help: fetched the index and the screenshot from the app')
+  writeFileSync(join(PUBLIC_HELP, 'app-overview.dark.png'), await fetchWithRetry(site.screenshotDarkUrl))
+  console.log('help: fetched the index and both screenshots (light and dark) from the app')
 }

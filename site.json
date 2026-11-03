@@ -2,6 +2,7 @@
   "appUrl": "https://app.warpcad.com/",
   "helpIndexUrl": "https://app.warpcad.com/help/index.json",
   "screenshotUrl": "https://app.warpcad.com/help/img/screenshots/app-overview.png",
+  "screenshotDarkUrl": "https://app.warpcad.com/help/img/screenshots/app-overview.dark.png",
   "repoUrl": "https://github.com/WarpCad/warpcad",
   "issuesUrl": "https://github.com/WarpCad/warpcad/issues",
   "appStoreUrl": ""

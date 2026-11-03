@@ -59,6 +59,28 @@ test.describe('light colour scheme', () => {
   })
 })
 
+test.describe('the hero picture follows the theme', () => {
+  for (const scheme of ['dark', 'light']) {
+    test.describe(`${scheme} colour scheme`, () => {
+      test.use({ colorScheme: scheme })
+      test(`shows only the ${scheme} twin`, async ({ page }) => {
+        await page.goto('/')
+        await expect(page.locator(`img.shot-${scheme}`)).toBeVisible()
+        await expect(page.locator(`img.shot-${scheme === 'dark' ? 'light' : 'dark'}`)).toBeHidden()
+      })
+    })
+  }
+
+  test('swaps when the VitePress `dark` class on <html> is toggled', async ({ page }) => {
+    await page.goto('/')
+    await page.evaluate(() => document.documentElement.classList.add('dark'))
+    await expect(page.locator('img.shot-dark')).toBeVisible()
+    await expect(page.locator('img.shot-light')).toBeHidden()
+    await page.evaluate(() => document.documentElement.classList.remove('dark'))
+    await expect(page.locator('img.shot-light')).toBeVisible()
+  })
+})
+
 /** The fixture index: the same shape the app publishes (`e2e/fixtures/index.json`). */
 const INDEX = JSON.parse(readFileSync('e2e/fixtures/index.json', 'utf8'))
 
