@@ -57,7 +57,7 @@ import { data } from './.vitepress/help.data.mjs'
 </div>
 
 <footer class="site-footer">
-  <a href="https://app.warpcad.com/#/help/privacy">Privacy</a>
+  <a data-testid="privacy" href="/privacy">Privacy</a>
   · <a :href="data.site.repoUrl" target="_blank" rel="noopener">Source</a>
   · © WarpCad contributors. Code AGPL-3.0-or-later; documentation CC BY-SA 4.0.
   <span v-if="data.site.appStoreUrl"> · <a :href="data.site.appStoreUrl" target="_blank" rel="noopener">Download on the App Store</a></span>
