@@ -40,6 +40,11 @@ jobs:
       # The screenshot baselines are macOS renders; the Linux runner's text rasterises differently, so the
       # picture-stable test is run locally only until Linux baselines exist (TODO/build-022).
       - run: node --test scripts/cname.test.mjs && npx playwright test --project=chromium-phone --project=chromium-tablet --project=chromium-laptop --grep-invert picture-stable
+      # The Playwright webServer rebuilds dist/ without the ID and with the help fixture, so the deployed
+      # build is made again here, last, with the real configuration.
+      - run: npm run build && npm run check:offline
+        env:
+          GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
