@@ -1,12 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Builds, checks and deploys the warpcad.com home page to GitHub Pages (TODO/build-021).
+# Builds and deploys the warpcad.com home page to GitHub Pages (TODO/build-021).
+# Manual only: Actions → pages → Run workflow, from main. It runs no tests; the pre-push hook
+# (.githooks/pre-push, scripts/test-stamp.mjs) checks they passed on the commit that was pushed.
 name: pages
 
 on:
-  push:
-    branches: [main]
-  schedule:
-    - cron: '17 5 * * *'
   workflow_dispatch:
 
 permissions:
@@ -25,6 +23,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # The pre-push gate only covers main, so refuse to deploy any other branch.
+      - name: Refuse to deploy a branch other than main
+        if: github.ref != 'refs/heads/main'
+        run: echo "::error::Pages deploys main only (ran from ${{ github.ref }})" && exit 1
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -36,15 +38,6 @@ jobs:
         env:
           GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
       - run: npm run check
-      - run: npx playwright install --with-deps chromium
-      # The screenshot baselines are macOS renders; the Linux runner's text rasterises differently, so the
-      # picture-stable test is run locally only until Linux baselines exist (TODO/build-022).
-      - run: node --test scripts/cname.test.mjs && npx playwright test --project=chromium-phone --project=chromium-tablet --project=chromium-laptop --grep-invert picture-stable
-      # The Playwright webServer rebuilds dist/ without the ID and with the help fixture, so the deployed
-      # build is made again here, last, with the real configuration.
-      - run: npm run build && npm run check:offline
-        env:
-          GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

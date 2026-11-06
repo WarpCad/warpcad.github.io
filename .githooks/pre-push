@@ -1,0 +1,5 @@
+#!/bin/sh
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Refuses a push of main unless `npm test` passed on the commit being pushed (scripts/test-stamp.mjs).
+# It does not run the tests. `git push --no-verify` skips it.
+exec node scripts/test-stamp.mjs verify-push

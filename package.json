@@ -10,7 +10,9 @@
     "test": "node --test scripts/cname.test.mjs scripts/help-groups.test.mjs scripts/policy.test.mjs scripts/analytics.test.mjs && playwright test",
     "prebuild": "node scripts/fetch-help.mjs",
     "postbuild": "node scripts/postbuild.mjs",
-    "check:offline": "node scripts/check.mjs --offline"
+    "check:offline": "node scripts/check.mjs --offline",
+    "test:record": "node scripts/test-stamp.mjs run",
+    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true"
   },
   "keywords": [],
   "author": "John Cole <johnwebbcole@gmail.com> (http://johnwebbcole.gitlab.io/)",

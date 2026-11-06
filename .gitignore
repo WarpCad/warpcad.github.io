@@ -5,3 +5,4 @@ playwright-report/
 *.local
 /public/help/
 .vitepress/cache/
+.test-record.json
